@@ -17,12 +17,12 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/categories")
+@RequestMapping("${api.prefix}/products")
 public class ProductController  {
 
     private final IProductService productService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllProducts() {
         List<Product> products = productService.getAllProducts();
         return ResponseEntity.ok(new ApiResponse("success" , products));
@@ -38,7 +38,7 @@ public class ProductController  {
         }
     }
 
-    @GetMapping("/add")
+    @PostMapping("/add")
     public ResponseEntity<ApiResponse> addProduct(@RequestBody AddProductRequest product) {
         try {
             Product addedProduct = productService.addProduct(product);
@@ -108,8 +108,8 @@ public class ProductController  {
         }
     }
 
-    @GetMapping("/products/by-brand")
-    public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brand) {
+    @GetMapping("/product/by-brand")
+    public ResponseEntity<ApiResponse> getProductByBrand(@RequestParam String brand) {
         try {
             List<Product> products = productService.getProductsByBrand(brand);
             if (products.isEmpty()) {

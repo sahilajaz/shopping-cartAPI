@@ -1,5 +1,6 @@
 package com.cart.web.cart_web.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,8 +24,10 @@ public class Product {
     private String description;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
+    @JsonIgnore
     private Category category;
     @OneToMany(mappedBy = "product" , cascade = CascadeType.ALL , orphanRemoval = true)
+    @JsonIgnore
     private List<Image> images;
 
     public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {
