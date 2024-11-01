@@ -1,13 +1,18 @@
 package com.cart.web.cart_web.service.product;
 
+import com.cart.web.cart_web.dto.ImageDto;
+import com.cart.web.cart_web.dto.ProductDto;
 import com.cart.web.cart_web.excpetions.ProductNotFoundException;
 import com.cart.web.cart_web.model.Category;
+import com.cart.web.cart_web.model.Image;
 import com.cart.web.cart_web.model.Product;
 import com.cart.web.cart_web.repository.CategoryRepository;
+import com.cart.web.cart_web.repository.ImageRepository;
 import com.cart.web.cart_web.repository.ProductRepository;
 import com.cart.web.cart_web.requests.AddProductRequest;
 import com.cart.web.cart_web.requests.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 
@@ -20,6 +25,8 @@ public class ProductService implements IProductService{
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ImageRepository imageRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public Product addProduct(AddProductRequest request) {
@@ -110,5 +117,23 @@ public class ProductService implements IProductService{
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand , name);
+    }
+
+    @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products) {
+        return products.stream()
+                .map(this::convertToProductDto).toList();
+    }
+
+    @Override
+    public ProductDto convertToProductDto(Product product) {
+       ProductDto productDto = modelMapper.map(product , ProductDto.class);
+       List<Image> images = imageRepository.findByProductId(product.getId());
+       List<ImageDto> imageDtos = images.stream()
+               .map(image -> modelMapper.map(image , ImageDto.class))
+               .toList();
+       productDto.setImages(imageDtos);
+
+       return  productDto;
     }
 }

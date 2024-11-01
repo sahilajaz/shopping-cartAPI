@@ -1,5 +1,6 @@
 package com.cart.web.cart_web.service.product;
 
+import com.cart.web.cart_web.dto.ProductDto;
 import com.cart.web.cart_web.model.Product;
 import com.cart.web.cart_web.requests.AddProductRequest;
 import com.cart.web.cart_web.requests.ProductUpdateRequest;
@@ -18,5 +19,6 @@ public interface IProductService {
     List<Product> getProductsByName(String name);
     List<Product> getProductsByBrandAndName(String category, String name);
     Long countProductsByBrandAndName(String brand, String name);
-
+    List<ProductDto> getConvertedProducts(List<Product> products);
+    ProductDto convertToProductDto(Product product);
 }

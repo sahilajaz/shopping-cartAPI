@@ -2,6 +2,7 @@ package com.cart.web.cart_web.service.image;
 
 import com.cart.web.cart_web.dto.ImageDto;
 import com.cart.web.cart_web.model.Image;
+import com.cart.web.cart_web.model.Product;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
